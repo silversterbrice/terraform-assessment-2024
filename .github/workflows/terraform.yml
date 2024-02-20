@@ -1,0 +1,52 @@
+name: 'Terraform'
+
+on:
+ # workflow_dispatch:
+ #  inputs:
+ #    terraform_action:
+ #       type: choice
+ #       description: select terraform action
+ #       options:
+ #       - apply
+ #       - destroy
+ #       required: true
+  push:
+    branches: [ "main" ]
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    env:
+      # AWS secrets
+      AWS_ACCESS_KEY_ID: ${{ secrets.DEMO_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.DEMO_AWS_SECRET_ACCESS_KEY }}
+
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 1.7.3
+        tf_actions_subcommand: 'init'
+        tf_actions_working_dir: '.'
+        tf_actions_comment: true
+       # args: '-var="instance_type=t2.medium"'
+    
+    - name: Terraform plan
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: 1.7.3
+        tf_actions_subcommand: 'plan'
+        tf_actions_working_dir: '.'
+        tf_actions_comment: true
+     #  args: '-var="instance_type=t2.medium"'
+      
+   
+ 
