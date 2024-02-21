@@ -10,6 +10,13 @@ cidr_open         = "0.0.0.0/0"
 access_ip         = "0.0.0.0/0"
 
 
+aws_lb = {
+  name               = "gov-loadbalancer"
+  idle_timeout       = 400
+  internal           = "false"
+  load_balancer_type = "application"
+}
+
 alb_target = {
   port                = 80
   protocol            = "HTTP"
@@ -21,10 +28,21 @@ alb_target = {
 
 
 alb_listener = {
-  port     = 80
-  protocol = "HTTP"
+  port        = 80
+  protocol    = "HTTP"
+  status_code = "HTTP_301"
 }
 
+lb_listener_https = {
+  port       = 443
+  protocol   = "HTTPS"
+  ssl_policy = "ELBSecurityPolicy-2016-08"
+}
+
+acm = {
+  domain_name       = "gov.terraform-assessment.com"
+  validation_method = "DNS"
+}
 
 nginx_launch_template = {
   name          = "gov-nginx-Launch-template"
@@ -66,9 +84,9 @@ kms_key_s3 = {
   bucket                  = "gov-cloudtrail-monitoring-2024"
   sse_algorithm           = "aws:kms"
   object_ownership        = "BucketOwnerPreferred"
-  force_destroy     =  "true"
-  acl               = "private"
-  sse_algorithm   = "aws:kms"
+  force_destroy           = "true"
+  acl                     = "private"
+  sse_algorithm           = "aws:kms"
   cloudtrail_name         = "gov-cloudtrail-2024"
   s3_key_prefix           = "cloudtrail"
   enable_logging          = "true"

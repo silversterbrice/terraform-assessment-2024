@@ -1,4 +1,6 @@
+##########################
 ### Module Declaratoin ###
+##########################
 
 
 ### Networking Resources ###
@@ -19,10 +21,18 @@ module "networking" {
 
 ### Load balancer resources ###
 module "loadbalancing" {
-  source         = "./loadbalancing"
-  public_sg      = module.networking.public_sg
-  public_subnets = module.networking.public_subnets
-  vpc_id         = module.networking.vpc_id
+  source = "./loadbalancing"
+
+  vpc_id = module.networking.vpc_id
+
+  aws_lb = {
+    name               = var.aws_lb.name
+    idle_timeout       = var.aws_lb.idle_timeout
+    internal           = var.aws_lb.internal
+    load_balancer_type = var.aws_lb.load_balancer_type
+    subnets            = module.networking.public_subnets
+    security_groups    = module.networking.public_sg
+  }
 
   lb_target_group = {
     port                = var.alb_target.port
@@ -34,9 +44,20 @@ module "loadbalancing" {
   }
 
   lb_listener = {
-    port     = var.alb_listener.port
-    protocol = var.alb_listener.protocol
+    port        = var.alb_listener.port
+    protocol    = var.alb_listener.protocol
+    status_code = var.alb_listener.status_code
+  }
 
+  lb_listener_https = {
+    port       = var.lb_listener_https.port
+    protocol   = var.lb_listener_https.protocol
+    ssl_policy = var.lb_listener_https.ssl_policy
+  }
+
+  acm = {
+    domain_name       = var.acm.domain_name
+    validation_method = var.acm.validation_method
   }
 }
 
@@ -87,12 +108,13 @@ module "monitoring" {
 
   }
 
+  # Cloudtrail
   kms_key_s3 = {
-    description             = var.kms_key_s3.description             #"KMS key for S3 encryption"
-    deletion_window_in_days = var.kms_key_s3.deletion_window_in_days #10
-    enable_key_rotation     = var.kms_key_s3.enable_key_rotation     #true
-    bucket                  = var.kms_key_s3.bucket                  #"gov-cloudtrail-monitoring-2024"
-    sse_algorithm           = var.kms_key_s3.sse_algorithm           #"aws:kms"
+    description             = var.kms_key_s3.description #"KMS key for S3 encryption"
+    deletion_window_in_days = var.kms_key_s3.deletion_window_in_days
+    enable_key_rotation     = var.kms_key_s3.enable_key_rotation
+    bucket                  = var.kms_key_s3.bucket        #"gov-cloudtrail-monitoring-2024"
+    sse_algorithm           = var.kms_key_s3.sse_algorithm #"aws:kms"
     cloudtrail_name         = var.kms_key_s3.cloudtrail_name
     s3_key_prefix           = var.kms_key_s3.s3_key_prefix
     enable_logging          = var.kms_key_s3.enable_logging
@@ -102,7 +124,7 @@ module "monitoring" {
 
   }
 
-  template_file_path  =  "./files/cloudtrail_bucket_policy.json.tpl"
+  template_file_path = "./files/cloudtrail_bucket_policy.json.tpl" // S3 bucket policy for cloudtrail
 }
 
 
