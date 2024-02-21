@@ -10,6 +10,15 @@ This Terraform module provides a complete infrastructure setup including compute
 - **Monitoring**: Set up CloudWatch dashboard, log group and Cloudtrail.
 - **Load Balancing**: Configure Application Load Balancer with HTTP and HTTPS listeners.
 
+| Module Name        | Description                       |
+|--------------------|-----------------------------------|
+| Compute Module     | Manages EC2 instances             |
+| Networking Module  | Manages VPC, subnets, and routes |
+| Security Module    | Manages security groups and IAM roles |
+| Monitoring Module  | Sets up CloudWatch alarms and logging |
+| Load Balancing Module | Configures Application Load Balancer |
+
+
 ## Usage
 
 ### Prerequisites
@@ -28,3 +37,4 @@ The module is organized into several directories:
 - `security`: Manages security groups and IAM roles.
 - `monitoring`: Sets up CloudWatch alarms and logging.
 - `loadbalancing`: Configures Application Load Balancer and listeners.
+
