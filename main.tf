@@ -60,7 +60,7 @@ module "compute" {
 
   autoscaling = {
     name                = var.nginx_autoscaling.name
-    vpc_zone_identifier = [module.networking.public_subnets[0], module.networking.public_subnets[1]]
+    vpc_zone_identifier = [module.networking.public_subnets[0], module.networking.public_subnets[1]] // Assign two public subnets
     desired_capacity    = var.nginx_autoscaling.desired_capacity
     max_size            = var.nginx_autoscaling.max_size
     min_size            = var.nginx_autoscaling.min_size
@@ -73,6 +73,9 @@ module "compute" {
   lb_target_group_arn = module.loadbalancing.target_group_arn[0]
 }
 
+
+
+### Monitoring resources ###
 module "monitoring" {
   source = "./monitoring"
 
@@ -100,4 +103,13 @@ module "monitoring" {
   }
 
   template_file_path  =  "./files/cloudtrail_bucket_policy.json.tpl"
+}
+
+
+
+### Security resources ###
+module "Security" {
+  source = "./security"
+
+  guardduty_enable = true
 }
