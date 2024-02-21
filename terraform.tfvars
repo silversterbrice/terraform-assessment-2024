@@ -38,13 +38,13 @@ nginx_launch_template = {
 
 
 nginx_autoscaling = {
-    name                =  "gov-nginx-asg"
-    desired_capacity    =  2
-    max_size            =  3
-    min_size            =  2
-    health_check_type   =  "ELB"
-    refresh_strategy    =  "Rolling"
-    health_percentage   =  90
+  name              = "gov-nginx-asg"
+  desired_capacity  = 2
+  max_size          = 3
+  min_size          = 2
+  health_check_type = "ELB"
+  refresh_strategy  = "Rolling"
+  health_percentage = 90
 }
 
 
@@ -54,7 +54,7 @@ key_name        = "govkey"
 
 
 cloudwatch = {
-  dashboard_name  =   "gov-nginx-cloudwatch-monitoring"
-  log_group       =   "gov-nginx-cloudwatch-log_group"
+  dashboard_name    = "gov-nginx-cloudwatch-monitoring"
+  log_group         = "gov-nginx-cloudwatch-log_group"
   retention_in_days = 30
 }

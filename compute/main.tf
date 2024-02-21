@@ -3,9 +3,9 @@
 
 ### Key Pair for EC2 ###
 resource "aws_key_pair" "gov_auth" {
-  key_name   = var.key_name
- # public_key = file(var.public_key_path)
- public_key = var.public_key_path
+  key_name = var.key_name
+  # public_key = file(var.public_key_path)
+  public_key = var.public_key_path
 }
 
 
@@ -20,11 +20,11 @@ resource "aws_launch_template" "nginx_lt" {
   update_default_version = true
 
   block_device_mappings {
-    device_name = var.launch_template.device_name 
+    device_name = var.launch_template.device_name
 
     ebs {
-      volume_size = var.launch_template.volume_size
-      encrypted   = false
+      volume_size           = var.launch_template.volume_size
+      encrypted             = false
       delete_on_termination = true
     }
   }
@@ -56,13 +56,13 @@ resource "aws_launch_template" "nginx_lt" {
 
 ### Autoscaling Group for Nginx ###
 resource "aws_autoscaling_group" "nginx_asg" {
-  name                =  var.autoscaling.name
-  vpc_zone_identifier =  var.autoscaling.vpc_zone_identifier   
-  desired_capacity    =  var.autoscaling.desired_capacity 
-  max_size            =  var.autoscaling.max_size
-  min_size            =  var.autoscaling.min_size
-  target_group_arns   =  var.autoscaling.target_group_arns  
-  health_check_type   =  var.autoscaling.health_check_type
+  name                = var.autoscaling.name
+  vpc_zone_identifier = var.autoscaling.vpc_zone_identifier
+  desired_capacity    = var.autoscaling.desired_capacity
+  max_size            = var.autoscaling.max_size
+  min_size            = var.autoscaling.min_size
+  target_group_arns   = var.autoscaling.target_group_arns
+  health_check_type   = var.autoscaling.health_check_type
 
   launch_template {
     id      = aws_launch_template.nginx_lt.id
@@ -70,19 +70,19 @@ resource "aws_autoscaling_group" "nginx_asg" {
   }
 
   instance_refresh {
-    strategy                    = var.autoscaling.refresh_strategy  
+    strategy = var.autoscaling.refresh_strategy
     preferences {
-    
-      min_healthy_percentage    = var.autoscaling.health_percentage           
+
+      min_healthy_percentage = var.autoscaling.health_percentage
     }
-    triggers = [ "desired_capacity" ] 
+    triggers = ["desired_capacity"]
   }
- 
-   tag {
+
+  tag {
     key                 = "Name"
-    value               =  var.autoscaling.name  
+    value               = var.autoscaling.name
     propagate_at_launch = true
-   }
+  }
 }
 
 
