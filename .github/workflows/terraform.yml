@@ -25,6 +25,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y jq  # Install jq for JSON parsing
+      
+      - name: Grant execute permission to retrieve_cidr.sh
+        run: chmod +x files/retrieve_cidr.sh
 
       # Retrieve CIDR
       - name: Retrieve CIDR
