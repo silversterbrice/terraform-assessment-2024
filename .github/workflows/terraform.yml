@@ -1,15 +1,6 @@
 name: 'Terraform'
 
 on:
- # workflow_dispatch:
- #  inputs:
- #    terraform_action:
- #       type: choice
- #       description: select terraform action
- #       options:
- #       - apply
- #       - destroy
- #       required: true
   push:
     branches: [ "main" ]
 
@@ -25,28 +16,42 @@ jobs:
     environment: production
 
     steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v3
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: 1.7.3
-        tf_actions_subcommand: 'init'
-        tf_actions_working_dir: '.'
-        tf_actions_comment: true
-       # args: '-var="instance_type=t2.medium"'
-    
-    - name: Terraform plan
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: 1.7.3
-        tf_actions_subcommand: 'plan'
-        tf_actions_working_dir: '.'
-        tf_actions_comment: true
-     #  args: '-var="instance_type=t2.medium"'
-      
-   
- 
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq  # Install jq for JSON parsing
+
+      # Retrieve CIDR
+      - name: Retrieve CIDR
+        id: get_cidr
+        run: |
+          if ./files/retrieve_cidr.sh; then
+            CIDR=$(cat cidr.txt)
+            echo "::set-output name=cidr::$CIDR"
+          else
+            echo "::set-output name=cidr::"
+          fi
+
+      # Initialize Terraform
+      - name: Terraform Init
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.7.3
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: '.'
+          tf_actions_comment: true
+
+  
+      # Plan Terraform with or without CIDR depending on availability
+      - name: Terraform plan
+        run: |
+          if [ -n "${{ steps.get_cidr.outputs.cidr }}" ]; then
+            terraform plan -var "cidr=${{ steps.get_cidr.outputs.cidr }}"
+          else
+            terraform plan
+          fi
