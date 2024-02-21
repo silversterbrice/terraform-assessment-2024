@@ -1,5 +1,5 @@
 ##########################
-### Module Declaratoin ###
+### Module Declaration ###
 ##########################
 
 
@@ -14,6 +14,8 @@ module "networking" {
   public_cidrs     = [for i in range(2, 255, 2) : cidrsubnet("${var.cidr}", 8, i)]
   cidr_open        = var.cidr_open
   security_groups  = local.security_groups
+
+
 
 }
 
