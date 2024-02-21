@@ -48,5 +48,5 @@ nginx_autoscaling = {
 }
 
 
-public_key_path = "c:\\users\\Monica\\.ssh\\govkey.pub"
+public_key_path = "c:\\terraform-code\\manifest\\govkey.pub"
 key_name        = "govkey"
