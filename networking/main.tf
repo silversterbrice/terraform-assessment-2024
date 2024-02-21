@@ -30,13 +30,10 @@ resource "aws_vpc" "gov_vpc" {
 
 ### Public Subnet ###
 resource "aws_subnet" "gov_public_subnet" {
-  #count                   = length(var.public_cidrs)
   count                   = var.public_sn_count
   vpc_id                  = aws_vpc.gov_vpc.id
   cidr_block              = var.public_cidrs[count.index]
   map_public_ip_on_launch = true
-  # availability_zone       = ["ap-southeast-1a", "ap-southeast-1b", "ap-southeast-1c"][count.index]
-  #  availability_zone = data.aws_availability_zones.available.names[count.index]
   availability_zone = random_shuffle.az_list.result[count.index]
 
   tags = {
@@ -47,13 +44,10 @@ resource "aws_subnet" "gov_public_subnet" {
 
 ### Private Subnet ###
 resource "aws_subnet" "gov_private_subnet" {
-  # count                   = length(var.private_cidrs)
   count                   = var.private_sn_count
   vpc_id                  = aws_vpc.gov_vpc.id
   cidr_block              = var.private_cidrs[count.index]
   map_public_ip_on_launch = false
-  # availability_zone       = ["ap-southeast-1a", "ap-southeast-1b", "ap-southeast-1c"][count.index]
-  # availability_zone = data.aws_availability_zones.available.names[count.index]
   availability_zone = random_shuffle.az_list.result[count.index]
 
   tags = {
@@ -90,7 +84,7 @@ resource "aws_route" "default_route" {
 }
 
 
-### Default RT ###
+### Default RT for private subnets###
 resource "aws_default_route_table" "gov_private_rt" {
   default_route_table_id = aws_vpc.gov_vpc.default_route_table_id
 
@@ -100,7 +94,7 @@ resource "aws_default_route_table" "gov_private_rt" {
 }
 
 
-### Associate Public Subnet with Public RT ###
+### Associate Public Subnets with Public RT ###
 resource "aws_route_table_association" "gov_public_assoc" {
   count          = var.public_sn_count
   subnet_id      = aws_subnet.gov_public_subnet.*.id[count.index]
