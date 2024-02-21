@@ -72,3 +72,17 @@ module "compute" {
 
   lb_target_group_arn   =  module.loadbalancing.target_group_arn[0]
 }
+
+module "monitoring" {
+  source = "./monitoring"
+  
+  cloudwatch = {
+    dashboard_name  = var.cloudwatch.dashboard_name
+    dashboard_body  = file("files/dashboard_config.json")
+    log_group     =    var.cloudwatch.log_group
+    retention_in_days = var.cloudwatch.retention_in_days
+
+
+  }
+
+}
