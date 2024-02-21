@@ -58,3 +58,21 @@ cloudwatch = {
   log_group         = "gov-nginx-cloudwatch-log_group"
   retention_in_days = 30
 }
+
+kms_key_s3 = {
+  description             = "KMS key for S3 encryption"
+  deletion_window_in_days = 10
+  enable_key_rotation     = "true"
+  bucket                  = "gov-cloudtrail-monitoring-2024"
+  sse_algorithm           = "aws:kms"
+  object_ownership        = "BucketOwnerPreferred"
+  force_destroy     =  "true"
+  acl               = "private"
+  sse_algorithm   = "aws:kms"
+  cloudtrail_name         = "gov-cloudtrail-2024"
+  s3_key_prefix           = "cloudtrail"
+  enable_logging          = "true"
+
+
+
+}

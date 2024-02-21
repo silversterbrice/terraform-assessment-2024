@@ -49,3 +49,7 @@ variable "key_name" {}
 variable "cloudwatch" {
   default = {}
 }
+
+variable "kms_key_s3" {
+  default = {}
+}

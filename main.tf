@@ -84,4 +84,20 @@ module "monitoring" {
 
   }
 
+  kms_key_s3 = {
+    description             = var.kms_key_s3.description             #"KMS key for S3 encryption"
+    deletion_window_in_days = var.kms_key_s3.deletion_window_in_days #10
+    enable_key_rotation     = var.kms_key_s3.enable_key_rotation     #true
+    bucket                  = var.kms_key_s3.bucket                  #"gov-cloudtrail-monitoring-2024"
+    sse_algorithm           = var.kms_key_s3.sse_algorithm           #"aws:kms"
+    cloudtrail_name         = var.kms_key_s3.cloudtrail_name
+    s3_key_prefix           = var.kms_key_s3.s3_key_prefix
+    enable_logging          = var.kms_key_s3.enable_logging
+    force_destroy           = var.kms_key_s3.force_destroy
+    object_ownership        = var.kms_key_s3.object_ownership
+    acl                     = var.kms_key_s3.acl
+
+  }
+
+  template_file_path  =  "./files/cloudtrail_bucket_policy.json.tpl"
 }
