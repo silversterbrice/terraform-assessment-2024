@@ -3,15 +3,15 @@
 
 ### Networking Resources ###
 module "networking" {
-  source = "./networking"
-  vpc_cidr = var.cidr
+  source           = "./networking"
+  vpc_cidr         = var.cidr
   max_subnets      = var.max_subnets
   private_sn_count = var.private_sn_counts #2
   public_sn_count  = var.public_sn_counts  #2
-  private_cidrs   = [for i in range(1, 255, 2) : cidrsubnet("${var.cidr}", 8, i)]
-  public_cidrs    = [for i in range(2, 255, 2) : cidrsubnet("${var.cidr}", 8, i)]
-  cidr_open       = var.cidr_open
-  security_groups = local.security_groups
+  private_cidrs    = [for i in range(1, 255, 2) : cidrsubnet("${var.cidr}", 8, i)]
+  public_cidrs     = [for i in range(2, 255, 2) : cidrsubnet("${var.cidr}", 8, i)]
+  cidr_open        = var.cidr_open
+  security_groups  = local.security_groups
 
 }
 
@@ -59,29 +59,28 @@ module "compute" {
   }
 
   autoscaling = {
-    name                =  var.nginx_autoscaling.name
-    vpc_zone_identifier =  [ module.networking.public_subnets[0],module.networking.public_subnets[1] ]  
-    desired_capacity    =  var.nginx_autoscaling.desired_capacity 
-    max_size            =  var.nginx_autoscaling.max_size
-    min_size            =  var.nginx_autoscaling.min_size
-    target_group_arns   =  module.loadbalancing.target_group_arn
-    health_check_type   =  var.nginx_autoscaling.health_check_type
-    refresh_strategy    =  var.nginx_autoscaling.refresh_strategy
-    health_percentage   =  var.nginx_autoscaling.health_percentage
+    name                = var.nginx_autoscaling.name
+    vpc_zone_identifier = [module.networking.public_subnets[0], module.networking.public_subnets[1]]
+    desired_capacity    = var.nginx_autoscaling.desired_capacity
+    max_size            = var.nginx_autoscaling.max_size
+    min_size            = var.nginx_autoscaling.min_size
+    target_group_arns   = module.loadbalancing.target_group_arn
+    health_check_type   = var.nginx_autoscaling.health_check_type
+    refresh_strategy    = var.nginx_autoscaling.refresh_strategy
+    health_percentage   = var.nginx_autoscaling.health_percentage
   }
 
-  lb_target_group_arn   =  module.loadbalancing.target_group_arn[0]
+  lb_target_group_arn = module.loadbalancing.target_group_arn[0]
 }
 
 module "monitoring" {
   source = "./monitoring"
-  
-  cloudwatch = {
-    dashboard_name  = var.cloudwatch.dashboard_name
-    dashboard_body  = file("files/dashboard_config.json")
-    log_group     =    var.cloudwatch.log_group
-    retention_in_days = var.cloudwatch.retention_in_days
 
+  cloudwatch = {
+    dashboard_name    = var.cloudwatch.dashboard_name
+    dashboard_body    = file("files/dashboard_config.json")
+    log_group         = var.cloudwatch.log_group
+    retention_in_days = var.cloudwatch.retention_in_days
 
   }
 
