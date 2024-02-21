@@ -16,6 +16,7 @@ resource "aws_cloudwatch_log_group" "log_group" {
 
 
 
+
 ### cloudtrail resources ###
 data "aws_caller_identity" "current" {}
 
