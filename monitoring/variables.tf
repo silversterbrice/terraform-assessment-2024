@@ -1,3 +1,6 @@
+# --- monitoring/variables.tf ---
+
+
 variable "cloudwatch" {
   default = {}
 }

@@ -53,3 +53,16 @@ variable "cloudwatch" {
 variable "kms_key_s3" {
   default = {}
 }
+
+variable "aws_lb" {
+  default = {}
+}
+
+variable "lb_listener_https" {
+  default = {}
+}
+
+variable "acm" {
+  default = {}
+
+}

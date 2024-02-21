@@ -1,3 +1,5 @@
+# --- security/main.tf ---
+
 
 ### AWS Guardduty ###
 resource "aws_guardduty_detector" "gov_guardduty" {
@@ -7,7 +9,7 @@ resource "aws_guardduty_detector" "gov_guardduty" {
     s3_logs {
       enable = var.guardduty_enable
     }
-  
+
     malware_protection {
       scan_ec2_instance_with_findings {
         ebs_volumes {
