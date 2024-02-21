@@ -34,7 +34,7 @@ resource "aws_subnet" "gov_public_subnet" {
   vpc_id                  = aws_vpc.gov_vpc.id
   cidr_block              = var.public_cidrs[count.index]
   map_public_ip_on_launch = true
-  availability_zone = random_shuffle.az_list.result[count.index]
+  availability_zone       = random_shuffle.az_list.result[count.index]
 
   tags = {
     Name = "gov_public_${count.index + 1}"
@@ -48,7 +48,7 @@ resource "aws_subnet" "gov_private_subnet" {
   vpc_id                  = aws_vpc.gov_vpc.id
   cidr_block              = var.private_cidrs[count.index]
   map_public_ip_on_launch = false
-  availability_zone = random_shuffle.az_list.result[count.index]
+  availability_zone       = random_shuffle.az_list.result[count.index]
 
   tags = {
     Name = "gov_private_${count.index + 1}"
