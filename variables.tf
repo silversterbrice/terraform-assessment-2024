@@ -45,12 +45,7 @@ variable "nginx_autoscaling" {
 variable "public_key_path" {}
 
 variable "key_name" {}
-/*
-variable "public_cidr" {
-  type = list
-}
 
-variable "private_cidr" {
-  type = list
+variable "cloudwatch" {
+  default = {}
 }
-*/

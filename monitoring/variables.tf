@@ -1,0 +1,3 @@
+variable "cloudwatch" {
+  default = {}
+}
