@@ -2,7 +2,7 @@
 
 This Terraform module provides a complete infrastructure setup including compute, networking, security, monitoring, and load balancing components in AWS.
 
-## Components created
+## Modules and Components created
 
 - **Compute**: Provision EC2 instances with Key pair, Launch template, Autoscaling group and Target group attachment.
 - **Networking**: Create VPC, subnets, Public/Private route tables, routes, Security group and internet gateway.
@@ -10,13 +10,6 @@ This Terraform module provides a complete infrastructure setup including compute
 - **Monitoring**: Set up CloudWatch dashboard, log group and Cloudtrail.
 - **Load Balancing**: Configure Application Load Balancer with HTTP and HTTPS listeners.
 
-| Module Name        | Description                       |
-|--------------------|-----------------------------------|
-| Compute Module     | Manages EC2 instances             |
-| Networking Module  | Manages VPC, subnets, and routes |
-| Security Module    | Manages security groups and IAM roles |
-| Monitoring Module  | Sets up CloudWatch alarms and logging |
-| Load Balancing Module | Configures Application Load Balancer |
 
 
 ## Usage
@@ -28,13 +21,75 @@ This Terraform module provides a complete infrastructure setup including compute
 - [Git Bash](https://gitforwindows.org/) for running Git commands on Windows.
 - AWS credentials configured.
 
-### Module Structure
 
-The module is organized into several directories:
+# Terraform GitHub Actions Pipeline
 
-- `compute`: Contains Terraform configuration for EC2 instances.
-- `networking`: Defines VPC, subnets, and routing configurations.
-- `security`: Manages security groups and IAM roles.
-- `monitoring`: Sets up CloudWatch alarms and logging.
-- `loadbalancing`: Configures Application Load Balancer and listeners.
+This repository includes a GitHub Actions pipeline for managing Terraform infrastructure deployments.
 
+## Workflow Details
+
+The GitHub Actions pipeline is triggered on pushes to the `main` branch. It performs the following tasks:
+
+- **Checkout**: Clones the repository to the GitHub Actions runner.
+- **Install Dependencies**: Installs dependencies required for the Terraform deployment, including `jq` for JSON parsing.
+- **Retrieve CIDR**: Executes a script to retrieve a CIDR block. If successful, sets the CIDR as an output for later use.
+- **Terraform Init**: Initializes Terraform using the specified version (1.7.3) and working directory (`.`).
+- **Terraform Plan**: Plans the Terraform deployment, optionally passing the retrieved CIDR block as a variable if available.
+
+## Pipeline Configuration
+
+```yaml
+name: Terraform
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  terraform:
+    name: Terraform
+    env:
+      # AWS secrets
+      AWS_ACCESS_KEY_ID: ${{ secrets.DEMO_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.DEMO_AWS_SECRET_ACCESS_KEY }}
+
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+      
+      - name: Grant execute permission to retrieve_cidr.sh
+        run: chmod +x files/retrieve_cidr.sh
+
+      - name: Retrieve CIDR
+        id: get_cidr
+        run: |
+          if ./files/retrieve_cidr.sh; then
+            CIDR=$(cat cidr.txt)
+            echo "::set-output name=cidr::$CIDR"
+          else
+            echo "::set-output name=cidr::"
+          fi
+
+      - name: Terraform Init
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 1.7.3
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: '.'
+          tf_actions_comment: true
+
+      - name: Terraform plan
+        run: |
+          if [ -n "${{ steps.get_cidr.outputs.cidr }}" ]; then
+            terraform plan -var "cidr=${{ steps.get_cidr.outputs.cidr }}"
+          else
+            terraform plan
+          fi
