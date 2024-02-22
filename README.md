@@ -42,7 +42,7 @@ module "networking" {
 module "loadbalancing" {
   source = "./loadbalancing"
 
-  vpc_id = module.networking.vpc_id
+   vpc_id = module.networking.vpc_id
 
   aws_lb = {
     name               = var.aws_lb.name
@@ -120,7 +120,6 @@ module "monitoring" {
     dashboard_body    = file("files/dashboard_config.json")
     log_group         = var.cloudwatch.log_group
     retention_in_days = var.cloudwatch.retention_in_days
-
   }
 
   kms_key_s3 = {
@@ -135,9 +134,7 @@ module "monitoring" {
     force_destroy           = var.kms_key_s3.force_destroy
     object_ownership        = var.kms_key_s3.object_ownership
     acl                     = var.kms_key_s3.acl
-
   }
-
   template_file_path = "./files/cloudtrail_bucket_policy.json.tpl" // S3 bucket policy for cloudtrail
 }
 
