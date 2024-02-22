@@ -8,7 +8,7 @@ This Terraform module provides a complete infrastructure setup including compute
 - **Networking**: Create VPC, subnets, Public/Private route tables, routes, Security group and internet gateway.
 - **Security**: Setup Guard duty.
 - **Monitoring**: Set up CloudWatch dashboard, log group and Cloudtrail.
-- **Load Balancing**: Configure Application Load Balancer with HTTP and HTTPS listeners.
+- **Load Balancing**: Configure Application Load Balancer with HTTP/HTTPS listeners and ACM.
 
 
 
