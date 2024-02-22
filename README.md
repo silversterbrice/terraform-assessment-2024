@@ -28,10 +28,10 @@ To begin with the assessment project:
 
 This Terraform module provides a complete infrastructure setup including compute, networking, security, monitoring, and load balancing components in AWS.
 
-### Modules and resources created
+### Modules and resources
 
 - **Compute**: Provision EC2 instances with Key pair, Launch template, Autoscaling group and Target group attachment.
-- **Networking**: Create VPC, subnets, Public/Private route tables, routes, Security group and internet gateway.
+- **Networking**: Create 1 VPC, 2 public / 2 private subnets, 1 Public/ 1 Private route tables, routes, Security group and internet gateway.
 - **Security**: Setup Guard duty.
 - **Monitoring**: Set up CloudWatch dashboard, log group and Cloudtrail.
 - **Load Balancing**: Configure Application Load Balancer with HTTP/HTTPS listeners and ACM.
