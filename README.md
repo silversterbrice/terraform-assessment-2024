@@ -43,7 +43,10 @@ This Terraform module provides a complete infrastructure setup including compute
 - [Git Bash](https://gitforwindows.org/) for running Git commands on Windows.
 - AWS credentials configured.
 
-## IP Details
+### Subnet CIDR Calculation
+
+The subnet CIDRs are determined using the cidrsubnet function provided by Terraform. This function assigns subnets within the specified VPC CIDR block based on the given prefix length. In this project, even numbers are allocated for public subnets, while odd numbers are allocated for private subnets
+
 | Subnet Type       | CIDR            |
 |-------------------|-----------------|
 | VPC               | 192.168.0.0/16  |
@@ -51,7 +54,7 @@ This Terraform module provides a complete infrastructure setup including compute
 | Public subnet 2   | 192.168.4.0/24  |
 | Private subnet 1  | 192.168.1.0/24  |
 | Private  subnet 2 | 192.168.3.0/24  |
-
+ 
 
 ### Terraform Module details
 
