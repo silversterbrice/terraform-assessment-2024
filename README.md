@@ -44,13 +44,13 @@ This Terraform module provides a complete infrastructure setup including compute
 - AWS credentials configured.
 
 ## IP Details
-| Subnet Type | CIDR            |
-|-------------|-----------------|
-| VPC         | 192.168.0.0/16  |
-| Public      | 192.168.2.0/24  |
-| Public      | 192.168.4.0/24  |
-| Private     | 192.168.1.0/24  |
-| Private     | 192.168.3.0/24  |
+| Subnet Type       | CIDR            |
+|-------------------|-----------------|
+| VPC               | 192.168.0.0/16  |
+| Public subnet 1   | 192.168.2.0/24  |
+| Public subnet 2   | 192.168.4.0/24  |
+| Private subnet 1  | 192.168.1.0/24  |
+| Private  subnet 2 | 192.168.3.0/24  |
 
 
 ### Terraform Module details
