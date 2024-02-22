@@ -25,9 +25,6 @@ This Terraform module provides a complete infrastructure setup including compute
 
 This repository contains Terraform modules for managing various aspects of AWS infrastructure, including networking, load balancing, compute, monitoring, and security.
 
-## Module Declaration
-
-### Networking Resources
 
 ```hcl
 module "networking" {
