@@ -144,7 +144,7 @@ module "Security" {
 
   guardduty_enable = true
 }
-
+```
 
 # Terraform GitHub Actions Pipeline
 
