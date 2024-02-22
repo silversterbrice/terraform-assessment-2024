@@ -43,6 +43,16 @@ This Terraform module provides a complete infrastructure setup including compute
 - [Git Bash](https://gitforwindows.org/) for running Git commands on Windows.
 - AWS credentials configured.
 
+## IP Details
+| Subnet Type | CIDR            |
+|-------------|-----------------|
+| VPC         | 192.168.0.0/16  |
+| Public      | 192.168.2.0/24  |
+| Public      | 192.168.4.0/24  |
+| Private     | 192.168.1.0/24  |
+| Private     | 192.168.3.0/24  |
+
+
 ### Terraform Module details
 
 This repository contains Terraform modules for managing various aspects of AWS infrastructure, including networking, load balancing, compute, monitoring, and security.
