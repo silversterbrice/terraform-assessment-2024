@@ -2,19 +2,19 @@
 
 This document provides an overview of the assessment project's implementation, which involves creating a repository, developing local Terraform modules, and setting up a GitHub Actions pipeline for automation.
 
-## Creating Repository
+### Creating Repository
 
 The assessment project begins with creating a new repository on GitHub. This repository serves as the central location for storing the project's codebase, including Terraform configurations, local modules, and pipeline configuration files.
 
-## Developing Local Terraform Modules
+### Developing Local Terraform Modules
 
 Local Terraform modules are developed to modularize the infrastructure components. Each module encapsulates specific functionality, such as networking, load balancing, compute, monitoring, and security. These modules are stored within the project repository and can be reused across different environments or projects.
 
-## Setting Up GitHub Actions Pipeline
+### Setting Up GitHub Actions Pipeline
 
 To automate various tasks in the assessment workflow, a GitHub Actions pipeline is configured. This pipeline automates processes such as linting, testing, and deployment of Terraform modules. The pipeline is defined using YAML configuration files and is stored within the project repository.
 
-## Getting Started
+### Getting Started
 
 To begin with the assessment project:
 
@@ -28,7 +28,7 @@ To begin with the assessment project:
 
 This Terraform module provides a complete infrastructure setup including compute, networking, security, monitoring, and load balancing components in AWS.
 
-## Modules and resources created
+### Modules and resources created
 
 - **Compute**: Provision EC2 instances with Key pair, Launch template, Autoscaling group and Target group attachment.
 - **Networking**: Create VPC, subnets, Public/Private route tables, routes, Security group and internet gateway.
@@ -43,7 +43,7 @@ This Terraform module provides a complete infrastructure setup including compute
 - [Git Bash](https://gitforwindows.org/) for running Git commands on Windows.
 - AWS credentials configured.
 
-## Terraform Module Overview
+### Terraform Module details
 
 This repository contains Terraform modules for managing various aspects of AWS infrastructure, including networking, load balancing, compute, monitoring, and security.
 
@@ -168,11 +168,11 @@ module "Security" {
 }
 ```
 
-# Terraform GitHub Actions Pipeline
+# GitHub Actions Pipeline Overview
 
 This repository includes a GitHub Actions pipeline for managing Terraform infrastructure deployments.
 
-## Workflow Details
+### Workflow Details
 
 The GitHub Actions pipeline is triggered on pushes to the `main` branch. It performs the following tasks:
 
@@ -182,7 +182,7 @@ The GitHub Actions pipeline is triggered on pushes to the `main` branch. It perf
 - **Terraform Init**: Initializes Terraform using the specified version (1.7.3) and working directory (`.`).
 - **Terraform Plan**: Plans the Terraform deployment, optionally passing the retrieved CIDR block as a variable if available.
 
-## Pipeline Configuration
+### Pipeline Configuration
 
 ```yaml
 name: Terraform
