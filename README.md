@@ -30,11 +30,11 @@ This Terraform module provides a complete infrastructure setup including compute
 
 ### Modules and resources
 
-- **Compute**: Provision EC2 instances with Key pair, Launch template, Autoscaling group and Target group attachment.
-- **Networking**: Create 1 VPC, 2 public / 2 private subnets, 1 Public/ 1 Private route tables, routes, Security group and internet gateway.
-- **Security**: Setup Guard duty.
-- **Monitoring**: Set up CloudWatch dashboard, log group and Cloudtrail.
-- **Load Balancing**: Configure Application Load Balancer with HTTP/HTTPS listeners and ACM.
+- **Compute**:  Provision a Launch Template, Autoscaling Group with a desired capacity of 2, a minimum of 2, and a maximum of 3 EC2 instances. Ensure each instance is configured with a Key Pair and NGINX installed via userdata. Additionally, attach the Autoscaling Group to a Target Group.
+- **Networking**: Create 1 VPC with 2 public and 2 private subnets, along with 1 public and 1 private route tables, routes, security groups, and an internet gateway.
+- **Security**: Configure GuardDuty for the current AWS account.
+- **Monitoring**: Configure a CloudWatch dashboard, log group, and CloudTrail.
+- **Load Balancing**: Set up an Application Load Balancer with HTTP and HTTPS listeners, along with ACM integration.
 
 ### Prerequisites
 
